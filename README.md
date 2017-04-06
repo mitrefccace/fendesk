@@ -40,4 +40,3 @@ user@yourmachine:~$  curl -k --request GET https://IP address:port/api/v2/ticket
 
 user@yourmachine:~$  curl -k --request DELETE https://IP address:port/api/v2/tickets/1.json  # delete
 ```
-
