@@ -27,7 +27,7 @@ Fendesk is a server that simulates Zendesk for ACE Direct in a Suitcase or anyon
 
 Usage: nodejs app.js
 
-#### Testing the Server
+#### Testing the Server 
 
 ```
 user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
