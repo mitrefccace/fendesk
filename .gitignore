@@ -1,0 +1,5 @@
+logs/
+api/v2/tickets/
+apidoc/
+node_modules/
+config.json
