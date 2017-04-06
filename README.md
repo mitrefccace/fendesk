@@ -15,6 +15,7 @@ Fendesk is a server that simulates Zendesk for ACE Direct in a Suitcase or anyon
 1. Clone this repository
 1. Download and install [Node.js](https://nodejs.org/en/)
 1. Install the required Node.js modules: cd into the userver directory, run `npm install`
+1. Edit config.json
 1. From the command line:
     * cd fendesk
     * npm install
@@ -24,8 +25,19 @@ Fendesk is a server that simulates Zendesk for ACE Direct in a Suitcase or anyon
 
 #### Running the Server
 
-Usage: nodejs app.js [ port ]
+Usage: nodejs app.js
 
-#### Testing the Server in AWS
+#### Testing the Server
 
+```
+user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
+
+user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X POST -d '{"ticket":{"subject": "My printer is on fire!","comment": {"body": "The smoke is very colorful."}}}' https://IP address:port/api/v2/tickets.json  # add
+
+user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X PUT -d '{"ticket":{"subject":"new subject","description":"new description","requester": {"name": "Newname","email":"new@mail.org","phone": "1-800-newn","user_fields": {"last_name": "Newlname"}},"status": "open","comment": "new comment","resolution": "new resolution"}}' https://IP address:port/api/v2/tickets/1.json  # update
+
+user@yourmachine:~$  curl -k --request GET https://IP address:port/api/v2/tickets/2837.json  # get
+
+user@yourmachine:~$  curl -k --request DELETE https://IP address:port/api/v2/tickets/1.json  # delete
+```
 
