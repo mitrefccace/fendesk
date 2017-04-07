@@ -8,6 +8,7 @@ var clear = require('clear');
 var log4js = require('log4js');
 var nconf = require('nconf');
 var cfile = null;
+var ip = require("ip");
 
 // Initialize log4js
 log4js.loadAppender('file');
@@ -65,13 +66,13 @@ var credentials = {
 // Start the server
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/apidoc'));
+app.use('/apidoc',express.static(__dirname + '/apidoc'));
 app.use(bodyParser.json({type: 'application/vnd/api+json'}));
 
-var routes = require('./routes/routes.js')(app,fs);
+var routes = require('./routes/routes.js')(app,fs,ip,decodeBase64(nconf.get('port')));
 var httpsServer = https.createServer(credentials,app);
 httpsServer.listen(parseInt(decodeBase64(nconf.get('port'))));
-console.log('https web server for agent portal up and running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('port'))));
+console.log('HTTPS Fendesk server running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('port'))));
 
 
 // Handle Ctrl-C (graceful shutdown)
