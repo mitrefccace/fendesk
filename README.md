@@ -10,6 +10,10 @@ Fendesk is a server that simulates Zendesk for ACE Direct in a Suitcase or anyon
 1. The location of the SSL key and certificate can be specified in the config.json by using the https:certificate and https:private_key parameters in the form of folder/file (e.g., ssl/mycert.pem and ssl/mykey.pem)
 1. Additional information can be found in the ACE Direct Platform Release document
 
+### App Configuration
+
+1. To use this with the esb, the esb must recognize this requester/submitter id: *12223334444*.
+
 ### Getting Started
 
 1. Clone this repository
