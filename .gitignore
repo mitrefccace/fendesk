@@ -1,4 +1,3 @@
-logs/
 api/v2/tickets/*.json
 apidoc/
 node_modules/
