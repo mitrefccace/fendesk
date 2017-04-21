@@ -2,7 +2,7 @@
 
 # ACE Fendesk Project
 
-Fendesk is a server that simulates Zendesk for ACE Direct in a Suitcase or anyone who needs a Zendesk simulator.
+Fendesk is a server that simulates a ticketing system for ACE Direct or any client that needs a simple ticketing system.
 
 ### SSL Configuration
 
