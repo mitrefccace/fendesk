@@ -185,9 +185,9 @@ var appRouter = function(app,fs,ip,port) {
 						return;
 					}
 					filenames.forEach(function(filename) {
-						if (!filename.endsWith(".json") || filename === 'counter.json')
-							continue;
-						console.log(filename);
+						if (filename.endsWith(".json") && filename !== 'counter.json') {
+							console.log(filename);
+						}
 						/*
 						fs.readFile(dirname + filename, 'utf-8', function(err, content) {
 							if (err) {
