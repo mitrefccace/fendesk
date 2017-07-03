@@ -190,7 +190,7 @@ var appRouter = function(app,fs,ip,port) {
 							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
 							filevrsnum = retrievedJson.custom_fields[1].value;
 							if (filevrsnum == vrsnum) {
-								console.log("adding: " + JSONT.stringify(retrievedJson));
+								console.log("adding: " + JSON.stringify(retrievedJson));
 								returnJson.push(JSON.parse(retrievedJson));
 							}
 						}
