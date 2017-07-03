@@ -179,14 +179,22 @@ var appRouter = function(app,fs,ip,port) {
 				}				
 
 				//get all tickets that have vrsnum as a custom field value
-				fs.readdir("api/v2/tickets", function(err, filenames) {
+				var tpath = "api/v2/tickets";
+				fs.readdir(tpath, function(err, filenames) {
 					if (err) {
 						console.log("error reading");
 						return;
 					}
 					filenames.forEach(function(filename) {
 						if (filename.endsWith(".json") && filename !== 'counter.json') {
-							console.log(filename);
+							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
+							console.log(retrievedJson.custom_fields[1].value); //vrsnum in file
+							
+
+							
+							
+							
+							
 						}
 						/*
 						fs.readFile(dirname + filename, 'utf-8', function(err, content) {
