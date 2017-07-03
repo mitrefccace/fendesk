@@ -36,11 +36,11 @@ Usage: nodejs app.js
 ```
 user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
 
-user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X POST -d '{"ticket":{"subject":"television","description":"Big Bang Theory is inaccurate","requester":{"name":"Albert","email":"al@someemail.org","phone":"1112223333","user_fields":{"last_name":"Einstein"}}}}' https://IP address:port/api/v2/tickets.json  # add
+user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X POST -d '{"ticket":{"subject":"television","description":"Big Bang Theory is inaccurate","custom_fields":[{"id":29894948,"value":null},{"id":80451187,"value": 1112223333}],"requester":{"name":"Albert","email":"al@someemail.org","phone":"1112223333","user_fields":{"last_name":"Einstein"}}}}' https://IP address:port/api/v2/tickets.json  # add
 
-user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X PUT -d '{"ticket":{"subject":"television (updated)","description":"Sheldon is funny","requester":{"name":"Albert","email":"al@someemail.org","phone":"1112223333","user_fields":{"last_name":"Einstein"}},"status":"new","comment":{"public":true,"body":"this is the comment body"},"resolution":"this is the resolution"}}' https://IP address:port/api/v2/tickets/1.json  # update
+user@yourmachine:~$  curl -k -H "Content-Type: application/json" -X PUT -d '{"ticket":{"subject":"television (updated)","description":"Sheldon is funny","custom_fields":[{"id":29894948,"value":123},{"id":80451187,"value":1231231234}],"requester":{"name":"Albert","email":"al@someemail.org","phone":"1112223333","user_fields":{"last_name":"Einstein"}},"status":"new","comment":{"public":true,"body":"this is the comment body"},"resolution":"this is the resolution"}}' https://IP address:port/api/v2/tickets/1.json  # update
 
-user@yourmachine:~$  curl -k --request GET https://IP address:port/api/v2/tickets/2837.json  # get
+user@yourmachine:~$  curl -k --request GET https://IP address:port/api/v2/tickets/1.json  # get
 
 user@yourmachine:~$  curl -k --request DELETE https://IP address:port/api/v2/tickets/1.json  # delete
 ```
