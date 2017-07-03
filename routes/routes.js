@@ -171,7 +171,7 @@ var appRouter = function(app,fs,ip,port) {
 				var vrsnum;
 				try {
 					//queryField = req.param('query');
-					queryField = req.params.query;
+					queryField = req.query.query;
 					terms = queryField.split(" ");
 					terms2 = terms[0].split(":");
 					vrsnum = terms2[1];
