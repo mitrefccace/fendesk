@@ -118,7 +118,7 @@ var appRouter = function(app,fs,ip,port) {
         responseJson.custom_fields[1].value = req.body.ticket.custom_fields[1].value;
         
         //write to file
-        fs.writeFile(tpath + '/' + ticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
+        fs.writeFileSync(tpath + '/' + ticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
 
         return res.status(200).send(responseJson);
     });
