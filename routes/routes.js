@@ -192,6 +192,7 @@ var appRouter = function(app,fs,ip,port) {
 							filevrsnum = retrievedJson.custom_fields[1].value;
 							console.log(filevrsnum + " : " + vrsnum);
 							if (filevrsnum === vrsnum) {
+								console.log("pushing: " + JSON.stringify(retrievedJson);
 								returnJson.push(retrievedJson);
 							}
 						}
