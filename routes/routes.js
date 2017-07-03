@@ -165,12 +165,44 @@ var appRouter = function(app,fs,ip,port) {
         console.log('Got a GET (search) request at /api/v2/search.json');
 
 				//require a query field for now
-        var queryField = req.param('query');
-				var terms = queryField.split(" ");
-				var terms2 = terms[0].split(":");
-				var vrsnum = terms2[1];
-				console.log(">>> vrsnum: " + vrsnum);
+        var queryField;
+				var terms;
+				var terms2;
+				var vrsnum;
+				try {
+					queryField = req.param('query');
+					terms = queryField.split(" ");
+					terms2 = terms[0].split(":");
+					vrsnum = terms2[1];
+				} catch (err) {
+					return res.status(404).send({'message': 'invalid query parameter'});
+				}				
 
+				//get all tickets that have vrsnum as a custom field value
+				fs.readdir("api/v2/tickets", function(err, filenames) {
+					if (err) {
+						console.log("error reading");
+						return;
+					}
+					filenames.forEach(function(filename) {
+						if (!filename.endsWith(".json") || filename === 'counter.json')
+							continue;
+						console.log(filename);
+						/*
+						fs.readFile(dirname + filename, 'utf-8', function(err, content) {
+							if (err) {
+								onError(err);
+								return;
+							}
+							onFileContent(filename, content);
+						});
+						*/
+						
+					});
+				});
+				
+				
+				
 				/*
         //if {id}.json file does not exist...
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
