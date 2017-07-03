@@ -183,24 +183,19 @@ var appRouter = function(app,fs,ip,port) {
 				var returnJson = [];
 				fs.readdir(tpath, function(err, filenames) {
 					if (err) {
-						console.log("error reading");
-						return;
+						return res.status(404).send({'message': 'error reading files'});
 					}
 					filenames.forEach(function(filename) {
 						if (filename.endsWith(".json") && filename !== 'counter.json') {
 							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
 							filevrsnum = retrievedJson.custom_fields[1].value;
-							console.log(">" + filevrsnum + "< >" + vrsnum + "<");
-							if (filevrsnum.toString() == vrsnum.toString()) {
-								console.log(">>>> " + JSON.parse(retrievedJson));
+							if (filevrsnum === vrsnum) {
 								returnJson.push(JSON.parse(retrievedJson));
 							}
 						}
 					});
+					res.status(200).send(returnJson);					
 				});
-				
-				console.log("returning >" + returnJson + "<");
-				res.status(200).send(returnJson);
 				
     }); 		
 
