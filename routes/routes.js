@@ -157,6 +157,30 @@ var appRouter = function(app,fs,ip,port) {
         fs.unlinkSync(tpath + '/' + ticketid + '.json');
         res.status(200).send({'message': 'success'});
     });
+		
+    //search for all tickets with custom vrs field equal to parameter
+		//e.g., http://host:port/api/v2/search.json?query=fieldvalue:22222222+type:ticket
+    app.get('/api/v2/tickets/search.json', function(req, res) {
+
+        console.log('Got a GET (search) request at /api/v2/search.json');
+
+				//require a query field for now
+        var queryField = req.params.query;
+				console.log(">>> " + queryField);
+
+				/*
+        //if {id}.json file does not exist...
+        if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
+            console.log('file does not exist: ' + tpath + '/' + ticketid + '.json');
+            return res.status(404).send({'message': ticketid + '.json not found'});
+        }        
+        
+        var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + ticketid + '.json', 'utf8'));
+        res.status(200).send(retrievedJson);
+				*/
+				res.status(200).send({'message': 'success'}); //test
+				
+    }); 		
 
 }
 
