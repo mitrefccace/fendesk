@@ -112,6 +112,8 @@ var appRouter = function(app,fs,ip,port) {
         responseJson.subject = req.body.ticket.subject;
         responseJson.description = req.body.ticket.description;
         responseJson.updated_at = dte;
+        responseJson.custom_fields[0].id = req.body.ticket.custom_fields[0].id;
+        responseJson.custom_fields[0].value = req.body.ticket.custom_fields[0].value;
         responseJson.custom_fields[1].id = req.body.ticket.custom_fields[1].id;
         responseJson.custom_fields[1].value = req.body.ticket.custom_fields[1].value;
         
