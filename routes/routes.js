@@ -180,6 +180,7 @@ var appRouter = function(app,fs,ip,port) {
 
 				//get all tickets that have vrsnum as a custom field value
 				var tpath = "api/v2/tickets";
+				var returnJson = [];
 				fs.readdir(tpath, function(err, filenames) {
 					if (err) {
 						console.log("error reading");
@@ -188,40 +189,15 @@ var appRouter = function(app,fs,ip,port) {
 					filenames.forEach(function(filename) {
 						if (filename.endsWith(".json") && filename !== 'counter.json') {
 							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
-							console.log(retrievedJson.custom_fields[1].value); //vrsnum in file
-							
-
-							
-							
-							
-							
-						}
-						/*
-						fs.readFile(dirname + filename, 'utf-8', function(err, content) {
-							if (err) {
-								onError(err);
-								return;
+							filevrsnum = retrievedJson.custom_fields[1].value;
+							if (filevrsnum === vrsnum) {
+								returnJson.push(retrievedJson);
 							}
-							onFileContent(filename, content);
-						});
-						*/
-						
+						}
 					});
 				});
 				
-				
-				
-				/*
-        //if {id}.json file does not exist...
-        if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
-            console.log('file does not exist: ' + tpath + '/' + ticketid + '.json');
-            return res.status(404).send({'message': ticketid + '.json not found'});
-        }        
-        
-        var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + ticketid + '.json', 'utf8'));
-        res.status(200).send(retrievedJson);
-				*/
-				res.status(200).send({'message': 'success'}); //test
+				res.status(200).send(retrievedJson);
 				
     }); 		
 
