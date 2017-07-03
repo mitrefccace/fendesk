@@ -70,6 +70,10 @@ var appRouter = function(app,fs,ip,port) {
                 "custom_fields": [{
                     "id": 87654321,
                     "value": null
+                },
+                {
+                    "id": req.body.ticket.custom_fields.id,
+                    "value":req.body.ticket.custom_fields.value 
                 }],
                 "satisfaction_rating": null,
                 "sharing_agreement_ids": [],
@@ -108,6 +112,8 @@ var appRouter = function(app,fs,ip,port) {
         responseJson.subject = req.body.ticket.subject;
         responseJson.description = req.body.ticket.description;
         responseJson.updated_at = dte;
+        responseJson.custom_fields.id = req.body.ticket.custom_fields.id;
+        responseJson.custom_fields.value = req.body.ticket.custom_fields.value;
         
         //write to file
         fs.writeFile(tpath + '/' + ticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
