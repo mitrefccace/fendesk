@@ -191,11 +191,11 @@ var appRouter = function(app,fs,ip,port) {
 							filevrsnum = retrievedJson.custom_fields[1].value;
 							if (filevrsnum == vrsnum) {
 								console.log("adding: " + JSON.stringify(retrievedJson));
-								returnJson.push(JSON.parse(retrievedJson));
+								returnJson.push(JSON.stringify(retrievedJson));
 							}
 						}
 					});
-					res.status(200).send(returnJson);					
+					res.status(200).send(JSON.parse(returnJson));					
 				});
 				
     }); 		
