@@ -196,6 +196,7 @@ var appRouter = function(app,fs,ip,port) {
 							}
 						}
 					});
+					console.log(returnJson);
 					res.status(200).send(JSON.parse(returnJson));					
 				});
 				
