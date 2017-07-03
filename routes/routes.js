@@ -165,8 +165,11 @@ var appRouter = function(app,fs,ip,port) {
         console.log('Got a GET (search) request at /api/v2/search.json');
 
 				//require a query field for now
-        var queryField = req.params.query;
-				console.log(">>> " + queryField);
+        var queryField = req.param('query');
+				var terms = queryField.split(" ");
+				var terms2 = terms.split(":");
+				var vrsnum = terms2[1];
+				console.log(">>> vrsnum: " + vrsnum);
 
 				/*
         //if {id}.json file does not exist...
