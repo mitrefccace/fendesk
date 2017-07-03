@@ -86,10 +86,10 @@ var appRouter = function(app,fs,ip,port) {
             };
         
         //write to file
-        fs.writeFile(tpath + '/' + newticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
+        fs.writeFileSync(tpath + '/' + newticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
         
         //update counter file
-        fs.writeFile(tpath + '/counter.json', JSON.stringify({ "counter": newticketid }, null, 2) , 'utf-8');
+        fs.writeFileSync(tpath + '/counter.json', JSON.stringify({ "counter": newticketid }, null, 2) , 'utf-8');
         console.log('created ' + newticketid + '.json');
         
         return res.status(200).send(responseJson);
