@@ -160,7 +160,7 @@ var appRouter = function(app,fs,ip,port) {
 		
     //search for all tickets with custom vrs field equal to parameter
 		//e.g., http://host:port/api/v2/search.json?query=fieldvalue:22222222+type:ticket
-    app.get('/api/v2/tickets/search.json', function(req, res) {
+    app.get('/api/v2/search.json', function(req, res) {
 
         console.log('Got a GET (search) request at /api/v2/search.json');
 
