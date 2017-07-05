@@ -29,11 +29,11 @@ Fendesk uses a simple storage scheme. It creates, updates, and returns tickets a
     * apidoc -i routes/ -o apidoc/
     * node app.js
 
-#### Running the Server
+#### Running
 
 Usage: nodejs app.js
 
-#### Testing the Fendesk server 
+#### Testing 
 
 ```
 user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
