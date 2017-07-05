@@ -33,7 +33,7 @@ Fendesk uses a simple storage scheme. It creates, updates, and returns tickets a
 
 Usage: nodejs app.js
 
-#### Testing the Server 
+#### Testing the Fendesk server 
 
 ```
 user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
