@@ -2,7 +2,9 @@
 
 # ACE Fendesk Project
 
-Fendesk is a server that simulates a ticketing system for ACE Direct or any client that needs a simple ticketing system.
+Fendesk is a server that emulates the [Zendesk](https://www.zendesk.com/) ticketing system for ACE Direct or any client that needs a simple ticketing system. The software only implements the subset of Zendesk RESTful API calls that ACE Direct uses. However, it is expandable to include other API calls.
+
+Fendesk uses a simple storage scheme. It creates, updates, and returns tickets as simple text files. The filename for a ticket follows the same naming convention as Zendesk: <ticketno>.json (e.g., 322.json). Fendesk offers RESTful API calls to test connectivity, add/update/delete/retrieve tickets, and search for all tickets with a specified VRS number.
 
 ### SSL Configuration
 
