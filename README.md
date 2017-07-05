@@ -46,5 +46,5 @@ user@yourmachine:~$  curl -k --request GET https://IP address:port/api/v2/ticket
 
 user@yourmachine:~$  curl -k --request DELETE https://IP address:port/api/v2/tickets/1.json  # delete
 
-user@yourmachine:~$  curl -k --request GET https://127.0.0.1:1234/api/v2/search.json?query=fieldvalue:1112223333+type:ticket  # search for tickets with the vrsnum value as a custom field value
+user@yourmachine:~$  curl -k --request GET https://127.0.0.1:1234/api/v2/search.json?query=fieldvalue:1112223333+type:ticket  # search for all tickets with the vrsnum value as a custom field value
 ```
