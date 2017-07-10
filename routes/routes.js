@@ -34,6 +34,22 @@ var appRouter = function(app,fs,ip,port) {
         var newticketid = obj.counter + 1;
         var dte = new Date().toISOString().replace(/\..+/, '') + 'Z';
         
+				//check for custom fields; default if not present
+				var cf0id = 29894948;
+				var cf0value = null;
+				var cf1id = 80451187;
+				var cf1value = null;
+				if (req.body.ticket.custom_fields !== 'undefined') {
+					if (req.body.ticket.custom_fields[0] !== 'undefined') {
+						cf0id = req.body.ticket.custom_fields[0].id;
+						cf0value = req.body.ticket.custom_fields[0].value;
+					}
+					if (req.body.ticket.custom_fields[1] !== 'undefined') {
+						cf1id = req.body.ticket.custom_fields[1].id;
+						cf1value = req.body.ticket.custom_fields[1].value;
+					}
+				}				
+				
         var responseJson = {
                 "url": "https://" + ipaddr + ":" + port + "/api/v2/tickets/" + newticketid + ".json",
                 "id": newticketid,
@@ -68,12 +84,12 @@ var appRouter = function(app,fs,ip,port) {
                 "due_at": null,
                 "tags": [],
                 "custom_fields": [{
-                    "id": req.body.ticket.custom_fields[0].id,
-                    "value":req.body.ticket.custom_fields[0].value 
+                    "id": cf0id,
+                    "value":cf0value 
                 },
                 {
-                    "id": req.body.ticket.custom_fields[1].id,
-                    "value":req.body.ticket.custom_fields[1].value 
+                    "id": cf1id,
+                    "value":cf1value 
                 }],
                 "satisfaction_rating": null,
                 "sharing_agreement_ids": [],
@@ -112,10 +128,27 @@ var appRouter = function(app,fs,ip,port) {
         responseJson.subject = req.body.ticket.subject;
         responseJson.description = req.body.ticket.description;
         responseJson.updated_at = dte;
-        responseJson.custom_fields[0].id = req.body.ticket.custom_fields[0].id;
-        responseJson.custom_fields[0].value = req.body.ticket.custom_fields[0].value;
-        responseJson.custom_fields[1].id = req.body.ticket.custom_fields[1].id;
-        responseJson.custom_fields[1].value = req.body.ticket.custom_fields[1].value;
+				
+				//check for custom fields; default if not present
+				var cf0id = 29894948;
+				var cf0value = null;
+				var cf1id = 80451187;
+				var cf1value = null;
+				if (req.body.ticket.custom_fields !== 'undefined') {
+					if (req.body.ticket.custom_fields[0] !== 'undefined') {
+						cf0id = req.body.ticket.custom_fields[0].id;
+						cf0value = req.body.ticket.custom_fields[0].value;
+					}
+					if (req.body.ticket.custom_fields[1] !== 'undefined') {
+						cf1id = req.body.ticket.custom_fields[1].id;
+						cf1value = req.body.ticket.custom_fields[1].value;
+					}
+				}					
+				
+        responseJson.custom_fields[0].id = cf0id;
+        responseJson.custom_fields[0].value = cf0value;
+        responseJson.custom_fields[1].id = cf1id;
+        responseJson.custom_fields[1].value = cf1value;
         
         //write to file
         fs.writeFileSync(tpath + '/' + ticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
@@ -189,7 +222,9 @@ var appRouter = function(app,fs,ip,port) {
 					filenames.forEach(function(filename) {
 						if (filename.endsWith(".json") && filename !== 'counter.json') {
 							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
-							filevrsnum = retrievedJson.custom_fields[1].value;
+							var filevrsnum = 0;
+							if (retrievedJson.custom_fields !== 'undefined' && retrievedJson.custom_fields[1] !== 'undefined')
+								filevrsnum = retrievedJson.custom_fields[1].value;
 							if (filevrsnum == vrsnum) {
 								//console.log("adding: " + JSON.stringify(retrievedJson));
 								returnJson.push(retrievedJson);
