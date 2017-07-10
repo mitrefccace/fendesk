@@ -40,11 +40,11 @@ var appRouter = function(app,fs,ip,port) {
 				var cf1id = 80451187;
 				var cf1value = null;
 				if (req.body.ticket.custom_fields !== 'undefined') {
-					if (req.body.ticket.custom_fields[0] !== 'undefined') {
+					if (req.body.ticket.custom_fields.length > 0) {
 						cf0id = req.body.ticket.custom_fields[0].id;
 						cf0value = req.body.ticket.custom_fields[0].value;
 					}
-					if (req.body.ticket.custom_fields[1] !== 'undefined') {
+					if (req.body.ticket.custom_fields.length > 1) {
 						cf1id = req.body.ticket.custom_fields[1].id;
 						cf1value = req.body.ticket.custom_fields[1].value;
 					}
@@ -135,11 +135,11 @@ var appRouter = function(app,fs,ip,port) {
 				var cf1id = 80451187;
 				var cf1value = null;
 				if (req.body.ticket.custom_fields !== 'undefined') {
-					if (req.body.ticket.custom_fields[0] !== 'undefined') {
+					if (req.body.ticket.custom_fields.length > 0) {
 						cf0id = req.body.ticket.custom_fields[0].id;
 						cf0value = req.body.ticket.custom_fields[0].value;
 					}
-					if (req.body.ticket.custom_fields[1] !== 'undefined') {
+					if (req.body.ticket.custom_fields.length > 1) {
 						cf1id = req.body.ticket.custom_fields[1].id;
 						cf1value = req.body.ticket.custom_fields[1].value;
 					}
@@ -223,7 +223,7 @@ var appRouter = function(app,fs,ip,port) {
 						if (filename.endsWith(".json") && filename !== 'counter.json') {
 							var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + filename, 'utf8'));
 							var filevrsnum = 0;
-							if (retrievedJson.custom_fields !== 'undefined' && retrievedJson.custom_fields[1] !== 'undefined')
+							if (retrievedJson.custom_fields !== 'undefined' && retrievedJson.custom_fields.length > 1)
 								filevrsnum = retrievedJson.custom_fields[1].value;
 							if (filevrsnum == vrsnum) {
 								//console.log("adding: " + JSON.stringify(retrievedJson));
