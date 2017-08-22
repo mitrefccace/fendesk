@@ -69,15 +69,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/apidoc',express.static(__dirname + '/apidoc'));
 app.use(bodyParser.json({type: 'application/vnd/api+json'}));
 
-var routes = require('./routes/routes.js')(app,fs,ip,decodeBase64(nconf.get('port')));
+var routes = require('./routes/routes.js')(app,fs,ip,decodeBase64(nconf.get('port')),logger);
 var httpsServer = https.createServer(credentials,app);
 httpsServer.listen(parseInt(decodeBase64(nconf.get('port'))));
-console.log('HTTPS Fendesk server running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('port'))));
+logger.debug('HTTPS Fendesk server running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('port'))));
 
 
 // Handle Ctrl-C (graceful shutdown)
 process.on('SIGINT', function() {
-  console.log('Exiting...');
+  logger.debug('Exiting...');
   process.exit(0);
 });
 

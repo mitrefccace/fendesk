@@ -10,7 +10,7 @@
 * but this is just Fendesk (emulator), so it's okay.
 */
 
-var appRouter = function(app,fs,ip,port) {
+var appRouter = function(app,fs,ip,port,logger) {
     
     var tpath = 'api/v2/tickets';
     var ipaddr = ip.address();
@@ -22,12 +22,16 @@ var appRouter = function(app,fs,ip,port) {
   
     //add ticket - This overwrites the ticket file if it already exists on disk.
     app.post('/api/v2/tickets.json',function(req, res) {
-        console.log('Got a POST (add) request at /api/v2/tickets.json');
+        logger.debug('Got a POST (add) request at /api/v2/tickets.json');
         
         //if counter.json does not exist, create it with counter value 0
+        //note: existsSync blocks; exists does not
         if (!fs.existsSync(tpath + '/counter.json')) {
-            console.log('creating counter.json first time...');
+            logger.debug('creating counter.json first time...');
+            
+            //note: writeFileSync blocks; writeFile does not
             fs.writeFileSync(tpath + '/counter.json', JSON.stringify({ "counter": 0 }, null, 2) , 'utf-8');
+            
         }
         
         var obj = JSON.parse(fs.readFileSync(tpath + '/counter.json', 'utf8'));
@@ -107,20 +111,20 @@ var appRouter = function(app,fs,ip,port) {
         
         //update counter file
         fs.writeFileSync(tpath + '/counter.json', JSON.stringify({ "counter": newticketid }, null, 2) , 'utf-8');
-        console.log('created ' + newticketid + '.json');
+        logger.debug('created ' + newticketid + '.json');
         
         return res.status(200).send(responseJson);
     });  
   
     //update ticket
     app.put('/api/v2/tickets/:id.json',function(req, res) {
-        console.log('Got a PUT (update) request at /api/v2/tickets/' + req.params.id + '.json');
+        logger.debug('Got a PUT (update) request at /api/v2/tickets/' + req.params.id + '.json');
         
         var ticketid = req.params.id;
 
         // does file exist?
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
-            console.log('file does not exist: ' + tpath + '/' + ticketid + '.json');
+            logger.debug('file does not exist: ' + tpath + '/' + ticketid + '.json');
             return res.status(404).send({'message': ticketid + '.json not found'});            
         }        
         var dte = new Date().toISOString().replace(/\..+/, '') + 'Z';
@@ -160,13 +164,13 @@ var appRouter = function(app,fs,ip,port) {
     //get a ticket
     app.get('/api/v2/tickets/:id.json', function(req, res) {
 
-        console.log('Got a GET (query) request at /api/v2/tickets/' + req.params.id + '.json');
+        logger.debug('Got a GET (query) request at /api/v2/tickets/' + req.params.id + '.json');
 
         var ticketid = req.params.id;
         
         //if {id}.json file does not exist...
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
-            console.log('file does not exist: ' + tpath + '/' + ticketid + '.json');
+            logger.error('file does not exist: ' + tpath + '/' + ticketid + '.json');
             return res.status(404).send({'message': ticketid + '.json not found'});
         }        
         
@@ -178,13 +182,13 @@ var appRouter = function(app,fs,ip,port) {
     //delete a ticket
     app.delete('/api/v2/tickets/:id.json', function (req, res) {
 
-        console.log('Got a DELETE request at /api/v2/tickets/' + req.params.id + '.json');
+        logger.debug('Got a DELETE request at /api/v2/tickets/' + req.params.id + '.json');
     
         var ticketid = req.params.id;
     
         // does file exist?
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
-            console.log('file does not exist: ' + tpath + '/' + ticketid + '.json');
+            logger.error('file does not exist: ' + tpath + '/' + ticketid + '.json');
             return res.status(404).send({'message': ticketid + '.json not found'});            
         }
        
@@ -196,7 +200,7 @@ var appRouter = function(app,fs,ip,port) {
 		//e.g., http://host:port/api/v2/search.json?query=fieldvalue:22222222+type:ticket
     app.get('/api/v2/search.json', function(req, res) {
 
-        console.log('Got a GET (search) request at /api/v2/search.json');
+        logger.debug('Got a GET (search) request at /api/v2/search.json');
 
 				//require a query field for now
         var queryField;
@@ -210,6 +214,7 @@ var appRouter = function(app,fs,ip,port) {
 					terms2 = terms[0].split(":");
 					vrsnum = terms2[1];
 				} catch (err) {
+          logger.error('invalid query parameter');
 					return res.status(404).send({'message': 'invalid query parameter'});
 				}				
 
@@ -227,7 +232,7 @@ var appRouter = function(app,fs,ip,port) {
 							if (retrievedJson.hasOwnProperty('custom_fields') && retrievedJson.custom_fields.length > 1)
 								filevrsnum = retrievedJson.custom_fields[1].value;
 							if (filevrsnum == vrsnum) {
-								//console.log("adding: " + JSON.stringify(retrievedJson));
+								logger.debug("adding: " + JSON.stringify(retrievedJson));
 								returnJson.push(retrievedJson);
 							}
 						}
