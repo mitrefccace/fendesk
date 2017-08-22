@@ -34,7 +34,6 @@ cfile = 'config.json';
 try {
 	var content = fs.readFileSync(cfile,'utf8');
 	var myjson = JSON.parse(content);
-	console.log("Valid JSON config file");
 } catch (ex) {
 	console.log("Error in " + cfile);
 	console.log('Exiting...');

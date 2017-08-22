@@ -1,5 +1,5 @@
 {
-	"debuglevel": "ERROR",
+	"debuglevel": "DEBUG",
 	"port": 1234,
 	"https": {
 		"certificate": "ssl/cert.pem",
