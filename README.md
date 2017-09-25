@@ -18,6 +18,7 @@ Fendesk uses a simple storage scheme. It creates, updates, and returns tickets a
 
 ### Getting Started
 
+To install fendesk, follow the README.md file in the autoinstall folder. The instructions for manual install are also provided below for reference.
 1. Clone this repository
 1. Download and install [Node.js](https://nodejs.org/en/)
 1. Install the required Node.js modules: cd into the userver directory, run `npm install`
