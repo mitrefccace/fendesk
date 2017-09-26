@@ -16,6 +16,21 @@ Fendesk uses a simple storage scheme. It creates, updates, and returns tickets a
 
 1. To use this with the esb, the esb must recognize this requester/submitter id: *12223334444*.
 
+#### Configuration File
+1. Copy config.json_TEMPLATE to config.json
+1. Insert values for the parameters below
+1. Values must be Encoded using base64 strings (example "port":8080 becomes "port":"ODA4MA=="), unless this is in development mode (see the clearText flag below).
+
+| Key         | Description |
+|-------------|-------------|
+| clearText   | If present, indicates that the config.json file is unencoded. |
+| debuglevel  | Logging level; TRACE, DEBUG, INFO, WARN, ERROR, or FATAL |
+| port  | The port for the server to listen on |
+| https:certificate | The path to the SSL certificate |
+| https:private_key | The path to the SSL private key |
+| redis:host | The IP address of the Redis server |
+| redis:port | The port number of the Redis server |
+
 ### Getting Started
 
 To install fendesk, follow the README.md file in the autoinstall folder. The instructions for manual install are also provided below for reference.

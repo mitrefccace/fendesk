@@ -1,8 +1,13 @@
 {
+  "clearText": "remove this field if this file is encoded",
 	"debuglevel": "DEBUG",
 	"port": 1234,
 	"https": {
 		"certificate": "ssl/cert.pem",
 		"private_key": "ssl/key.pem"
+	},
+	"redis": {
+    "host": "host",
+    "port": 1000
 	}
 }
