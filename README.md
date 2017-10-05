@@ -19,7 +19,7 @@ Fendesk uses a simple storage scheme. It creates, updates, and returns tickets a
 #### Configuration File
 1. Copy config.json_TEMPLATE to config.json
 1. Insert values for the parameters below
-1. Values must be Encoded using base64 strings (example "port":8080 becomes "port":"ODA4MA=="), unless this is in development mode (see the clearText flag below).
+1. Values must be Encoded using Base64 encoding (example "port":8080 becomes "port":"ODA4MA=="), unless this is in development mode (see the clearText flag below).
 
 | Key         | Description |
 |-------------|-------------|
@@ -49,7 +49,7 @@ To install fendesk, follow the README.md file in the autoinstall folder. The ins
 
 Usage: nodejs app.js
 
-#### Testing 
+#### Testing
 
 ```
 user@yourmachine:~$  curl -k --request GET https://IP address:port/  # check connectivity
