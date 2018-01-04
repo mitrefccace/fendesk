@@ -28,7 +28,7 @@ log4js.configure({
 // Get the name of the config file from the command line (optional)
 nconf.argv().env();
 
-cfile = 'config.json';
+cfile = '../dat/config.json';
 
 //Validate the incoming JSON config file
 try {
@@ -49,13 +49,13 @@ var configobj = JSON.parse(fs.readFileSync(cfile,'utf8'));
 //the presence of the clearText field in config.json means that the file is in clear text
 //remove the field if the file is encoded
 var clearText = false;
-if (typeof(nconf.get('clearText')) !== "undefined") {
+if (typeof(nconf.get('common:cleartext')) !== "undefined") {
     console.log('clearText field is in config.json. assuming file is in clear text');
     clearText = true;
 }
 
 // Set log4js level from the config file
-logger.setLevel(decodeBase64(nconf.get('debuglevel')));
+logger.setLevel(decodeBase64(nconf.get('common:debug_level')));
 logger.trace('TRACE messages enabled.');
 logger.debug('DEBUG messages enabled.');
 logger.info('INFO messages enabled.');
@@ -66,8 +66,8 @@ logger.info('Using config file: ' + cfile);
 
 
 var credentials = {
-	key: fs.readFileSync(decodeBase64(nconf.get('https:private_key'))),
-	cert: fs.readFileSync(decodeBase64(nconf.get('https:certificate')))
+	key: fs.readFileSync(decodeBase64(nconf.get('common:https:private_key'))),
+	cert: fs.readFileSync(decodeBase64(nconf.get('common:https:certificate')))
 };
 
 // Start the server
@@ -76,10 +76,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/apidoc',express.static(__dirname + '/apidoc'));
 app.use(bodyParser.json({type: 'application/vnd/api+json'}));
 
-var routes = require('./routes/routes.js')(app,fs,ip,decodeBase64(nconf.get('port')),logger);
+var routes = require('./routes/routes.js')(app,fs,ip,decodeBase64(nconf.get('zendesk:port')),logger);
 var httpsServer = https.createServer(credentials,app);
-httpsServer.listen(parseInt(decodeBase64(nconf.get('port'))));
-logger.debug('HTTPS Fendesk server running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('port'))));
+httpsServer.listen(parseInt(decodeBase64(nconf.get('zendesk:port'))));
+logger.debug('HTTPS Fendesk server running on port=%s   (Ctrl+C to Quit)', parseInt(decodeBase64(nconf.get('zendesk:port'))));
 
 
 // Handle Ctrl-C (graceful shutdown)
