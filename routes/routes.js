@@ -11,39 +11,39 @@
 */
 
 var appRouter = function(app,fs,ip,port,logger) {
-    
+
     var tpath = 'api/v2/tickets';
     var ipaddr = ip.address();
-    
+
     //is server running?
     app.get('/', function(req, res) {
         return res.status(200).send({'message': 'Welcome to Fendesk.'});
     });
-  
+
     //add ticket - This overwrites the ticket file if it already exists on disk.
     app.post('/api/v2/tickets.json',function(req, res) {
         logger.debug('Got a POST (add) request at /api/v2/tickets.json');
-        
+
         //if counter.json does not exist, create it with counter value 0
         //note: existsSync blocks; exists does not
         if (!fs.existsSync(tpath + '/counter.json')) {
             logger.debug('creating counter.json first time...');
-            
+
             //note: writeFileSync blocks; writeFile does not
             fs.writeFileSync(tpath + '/counter.json', JSON.stringify({ "counter": 0 }, null, 2) , 'utf-8');
-            
+
         }
-        
+
         var obj = JSON.parse(fs.readFileSync(tpath + '/counter.json', 'utf8'));
         var newticketid = obj.counter + 1;
         var dte = new Date().toISOString().replace(/\..+/, '') + 'Z';
-        
+
 				//check for custom fields; default if not present
 				var cf0id = 29894948;
 				var cf0value = null;
 				var cf1id = 80451187;
 				var cf1value = null;
-				
+
 				if (req.body.ticket.hasOwnProperty('custom_fields')) {
 					if (req.body.ticket.custom_fields.length > 0) {
 						cf0id = req.body.ticket.custom_fields[0].id;
@@ -53,8 +53,8 @@ var appRouter = function(app,fs,ip,port,logger) {
 						cf1id = req.body.ticket.custom_fields[1].id;
 						cf1value = req.body.ticket.custom_fields[1].value;
 					}
-				}				
-				
+				}
+
         var responseJson = {
                 "url": "https://" + ipaddr + ":" + port + "/api/v2/tickets/" + newticketid + ".json",
                 "id": newticketid,
@@ -90,11 +90,11 @@ var appRouter = function(app,fs,ip,port,logger) {
                 "tags": [],
                 "custom_fields": [{
                     "id": cf0id,
-                    "value":cf0value 
+                    "value":cf0value
                 },
                 {
                     "id": cf1id,
-                    "value":cf1value 
+                    "value":cf1value
                 }],
                 "satisfaction_rating": null,
                 "sharing_agreement_ids": [],
@@ -105,35 +105,35 @@ var appRouter = function(app,fs,ip,port,logger) {
                 "brand_id": 123456,
                 "allow_channelback": false
             };
-        
+
         //write to file
         fs.writeFileSync(tpath + '/' + newticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
-        
+
         //update counter file
         fs.writeFileSync(tpath + '/counter.json', JSON.stringify({ "counter": newticketid }, null, 2) , 'utf-8');
         logger.debug('created ' + newticketid + '.json');
-        
+
         return res.status(200).send(responseJson);
-    });  
-  
+    });
+
     //update ticket
     app.put('/api/v2/tickets/:id.json',function(req, res) {
         logger.debug('Got a PUT (update) request at /api/v2/tickets/' + req.params.id + '.json');
-        
+
         var ticketid = req.params.id;
 
         // does file exist?
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
             logger.debug('file does not exist: ' + tpath + '/' + ticketid + '.json');
-            return res.status(404).send({'message': ticketid + '.json not found'});            
-        }        
+            return res.status(404).send({'message': ticketid + '.json not found'});
+        }
         var dte = new Date().toISOString().replace(/\..+/, '') + 'Z';
         var responseJson = JSON.parse(fs.readFileSync(tpath + '/' + ticketid + '.json', 'utf8'));
 
         responseJson.subject = req.body.ticket.subject;
         responseJson.description = req.body.ticket.description;
         responseJson.updated_at = dte;
-				
+
 				//check for custom fields; default if not present
 				var cf0id = 29894948;
 				var cf0value = null;
@@ -148,13 +148,13 @@ var appRouter = function(app,fs,ip,port,logger) {
 						cf1id = req.body.ticket.custom_fields[1].id;
 						cf1value = req.body.ticket.custom_fields[1].value;
 					}
-				}					
-				
+				}
+
         responseJson.custom_fields[0].id = cf0id;
         responseJson.custom_fields[0].value = cf0value;
         responseJson.custom_fields[1].id = cf1id;
         responseJson.custom_fields[1].value = cf1value;
-        
+
         //write to file
         fs.writeFileSync(tpath + '/' + ticketid + '.json', JSON.stringify(responseJson, null, 2) , 'utf-8');
 
@@ -167,35 +167,35 @@ var appRouter = function(app,fs,ip,port,logger) {
         logger.debug('Got a GET (query) request at /api/v2/tickets/' + req.params.id + '.json');
 
         var ticketid = req.params.id;
-        
+
         //if {id}.json file does not exist...
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
             logger.error('file does not exist: ' + tpath + '/' + ticketid + '.json');
             return res.status(404).send({'message': ticketid + '.json not found'});
-        }        
-        
+        }
+
         var retrievedJson = JSON.parse(fs.readFileSync(tpath + '/' + ticketid + '.json', 'utf8'));
- 
+
         res.status(200).send(retrievedJson);
-    }); 
+    });
 
     //delete a ticket
     app.delete('/api/v2/tickets/:id.json', function (req, res) {
 
         logger.debug('Got a DELETE request at /api/v2/tickets/' + req.params.id + '.json');
-    
+
         var ticketid = req.params.id;
-    
+
         // does file exist?
         if (!fs.existsSync(tpath + '/' + ticketid + '.json')) {
             logger.error('file does not exist: ' + tpath + '/' + ticketid + '.json');
-            return res.status(404).send({'message': ticketid + '.json not found'});            
+            return res.status(404).send({'message': ticketid + '.json not found'});
         }
-       
+
         fs.unlinkSync(tpath + '/' + ticketid + '.json');
         res.status(200).send({'message': 'success'});
     });
-		
+
     //search for all tickets with custom vrs field equal to parameter
 		//e.g., http://host:port/api/v2/search.json?query=fieldvalue:22222222+type:ticket
     app.get('/api/v2/search.json', function(req, res) {
@@ -216,7 +216,7 @@ var appRouter = function(app,fs,ip,port,logger) {
 				} catch (err) {
           logger.error('invalid query parameter');
 					return res.status(404).send({'message': 'invalid query parameter'});
-				}				
+				}
 
 				//get all tickets that have vrsnum as a custom field value
 				var tpath = "api/v2/tickets";
@@ -237,10 +237,10 @@ var appRouter = function(app,fs,ip,port,logger) {
 							}
 						}
 					});
-					res.status(200).send(returnJson);					
+					res.status(200).send(returnJson);
 				});
-				
-    }); 		
+
+    });
 
 }
 
